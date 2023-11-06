@@ -7,10 +7,10 @@ contract DecentralizedTicketingPlatform {
         address artist;
         uint256 eventDate;
         uint256 eventTime;
-        uint256 price;
-        string section;
         uint256 row;
         uint256 seat;
+        uint256 price;
+        string section;
         bool isAvailable;
     }
     
@@ -25,12 +25,12 @@ contract DecentralizedTicketingPlatform {
     
     // Parameters for contract owner
     address public contractOwner;
-    uint256 public resaleTaxPercentage = 5;
-    bool public isResaleAllowed = true;
-    bool public isTransferAllowed = true;
     
     // Total tickets count
     uint256 public totalTickets;
+    uint256 public resaleTaxPercentage = 5;
+    bool public isResaleAllowed = true;
+    bool public isTransferAllowed = true;
     
     // Events
     event TicketCreated(uint256 ticketId);
