@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
-contract DecentralizedTicketingPlatform {
+import "./Ownable.sol";
+
+contract DecentralizedTicketingPlatform is Ownable {
     
     struct Ticket {
         address artist;
@@ -23,9 +25,6 @@ contract DecentralizedTicketingPlatform {
     // Mapping of address to list of owned tickets
     mapping(address => uint256[]) public ownedTickets;
     
-    // Parameters for contract owner
-    address public contractOwner;
-    
     // Total tickets count
     uint256 public totalTickets;
     uint256 public resaleTaxPercentage = 5;
@@ -37,19 +36,12 @@ contract DecentralizedTicketingPlatform {
     event TicketBought(address buyer, uint256 ticketId);
     event SubscriptionBought(address subscriber, address artist);
     
-    // Modifiers
-    modifier onlyOwner() {
-        require(msg.sender == contractOwner, "Only the contract owner can perform this action");
-        _;
-    }
-    
     modifier onlySubscribed(address artist) {
         require(block.timestamp - artistSubscriptions[artist][msg.sender] < 30 days, "You are not subscribed to this artist");
         _;
     }
 
-    constructor() {
-        contractOwner = msg.sender;
+    constructor() Ownable(tx.origin) {
     }
     
     // Contract Owner functions
