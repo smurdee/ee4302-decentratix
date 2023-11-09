@@ -12,8 +12,9 @@ contract DecentralizedTicketingPlatform is Ownable {
         uint256 row;
         uint256 seat;
         uint256 price;
+        uint256 ticketId;
         string section;
-        bool isAvailable;
+        bool isPurchased;
     }
     
     // Mapping of ticketId to Ticket object
@@ -23,7 +24,7 @@ contract DecentralizedTicketingPlatform is Ownable {
     mapping(address => mapping(address => uint256)) public artistSubscriptions;
     
     // Mapping of address to list of owned tickets
-    mapping(address => uint256[]) public ownedTickets;
+    mapping(uint256 => address) public ticketToOwner;
     
     // Total tickets count
     uint256 public totalTickets;
@@ -43,18 +44,25 @@ contract DecentralizedTicketingPlatform is Ownable {
 
     constructor() Ownable(tx.origin) {
     }
+
+    receive() external payable {
+    }
+
+    fallback() external payable {
+        revert("Uh oh, something went wrong!");
+    }
     
     // Contract Owner functions
     function createTicket(
-        address artist,
-        uint256 eventDate,
-        uint256 eventTime,
-        uint256 price,
-        string memory section,
-        uint256 row,
-        uint256 seat
+        address _artist,
+        uint256 _eventDate,
+        uint256 _eventTime,
+        uint256 _row,
+        uint256 _seat,
+        uint256 _price,
+        string memory section
     ) public onlyOwner {
-        tickets[totalTickets] = Ticket(artist, eventDate, eventTime, row, seat, price, section, true);
+        tickets[totalTickets] = Ticket(_artist, _eventDate, _eventTime, _row, _seat, _price, totalTickets, section, false);
         emit TicketCreated(totalTickets);
         totalTickets++;
     }
@@ -63,30 +71,35 @@ contract DecentralizedTicketingPlatform is Ownable {
         tickets[ticketId].price = newPrice;
     }
     
-    function modifyResaleTax(uint256 newPercentage) public onlyOwner {
-        resaleTaxPercentage = newPercentage;
+    function modifyResaleTax(uint256 newResaleTaxPercentage) public onlyOwner {
+        resaleTaxPercentage = newResaleTaxPercentage;
     }
     
-    function modifyResaleAllowed(bool flag) public onlyOwner {
-        isResaleAllowed = flag;
+    function toggleResaleAllowed() public onlyOwner {
+        isResaleAllowed = !isResaleAllowed;
     }
     
-    function modifyTransferAllowed(bool flag) public onlyOwner {
-        isTransferAllowed = flag;
+    function toggleTransferAllowed() public onlyOwner {
+        isTransferAllowed = !isTransferAllowed;
     }
     
     // User functions
     function buyTicket(uint256 ticketId) public payable {
-        require(tickets[ticketId].isAvailable, "Ticket not available");
-        require(msg.value == tickets[ticketId].price, "Insufficient payment");
+        uint256 ticketPrice = tickets[ticketId].price;
+        require(!(tickets[ticketId].isPurchased), "Ticket already purchased");
+        require(msg.value >= ticketPrice, "Insufficient payment");
         
         if(block.timestamp + 2 days < tickets[ticketId].eventDate) {
             require(block.timestamp - artistSubscriptions[tickets[ticketId].artist][msg.sender] < 30 days, "You are not subscribed to this artist");
         }
-        
-        tickets[ticketId].isAvailable = false;
-        ownedTickets[msg.sender].push(ticketId);
+        (bool success,) = address(this).call{value: msg.value}("");
+        require(success, "Ticket cannot be purchased");
+        tickets[ticketId].isPurchased = true;
+        ticketToOwner[ticketId] = msg.sender;
         emit TicketBought(msg.sender, ticketId);
+        if (msg.value != ticketPrice) {
+            payable(msg.sender).transfer(msg.value - ticketPrice);
+        }
     }
     
     function subscribeToArtist(address artist) public payable {
@@ -96,13 +109,9 @@ contract DecentralizedTicketingPlatform is Ownable {
         emit SubscriptionBought(msg.sender, artist);
     }
     
-    function getOwnedTickets() public view returns(uint256[] memory) {
-        return ownedTickets[msg.sender];
-    }
-    
     function resaleTicket(uint256 ticketId, uint256 newPrice) public {
         require(isResaleAllowed, "Resale is not allowed");
-        require(ownedTickets[msg.sender].length > 0, "You do not own this ticket");
+        require(ticketToOwner[ticketId] == msg.sender, "You do not own this ticket");
         
         uint256 tax = (newPrice * resaleTaxPercentage) / 100;
         tickets[ticketId].price = newPrice + tax;
@@ -110,18 +119,9 @@ contract DecentralizedTicketingPlatform is Ownable {
     
     function transferTicket(uint256 ticketId, address newOwner) public {
         require(isTransferAllowed, "Transfer is not allowed");
-        require(ownedTickets[msg.sender].length > 0, "You do not own this ticket");
+        require(ticketToOwner[ticketId] == msg.sender, "You do not own this ticket");
         
-        for(uint256 i = 0; i < ownedTickets[msg.sender].length; i++) {
-            if(ownedTickets[msg.sender][i] == ticketId) {
-                // Remove ticket from original owner
-                delete ownedTickets[msg.sender][i];
-                
-                // Add ticket to new owner
-                ownedTickets[newOwner].push(ticketId);
-                break;
-            }
-        }
+        ticketToOwner[ticketId] = newOwner;
     }
 
     function getMessageHash(address _owner, uint256 _ticketId, string memory _message) public pure returns (bytes32) {
