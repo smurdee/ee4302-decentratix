@@ -12,7 +12,7 @@ export default function Login(props){
                     <br></br>
                     Please install&nbsp;
                     <span className = "login-highlight">
-                        METAMASK 
+                        METAMASK
                     </span>
                     &nbsp;to your browser to proceed. 
                 </p>

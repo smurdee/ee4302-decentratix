@@ -15,7 +15,7 @@ export default function Storage(props){
                     The contract file can be found at "~/src/contracts/SimpleStorage.sol". 
                     <br/>
                     &emsp;Similar to what you see on REMIX, 
-                    the functionality of the contract can be implemented with the buttons to the right. 
+                    the functionality of the contract can be implemented with the buttons to the right.
                     A value will be stored by filling in a number and clicking "store". 
                     The value can then be read by clicking "get". 
                 </p>

@@ -31,6 +31,7 @@ export default function App() {
     const {ethereum} = window;
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+    const contractAddress = "";
     const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
 
     // useEffect(() => {
