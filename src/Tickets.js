@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 
 class Market extends Component {
+	
+  handleButtonClick = (ticket) => {
+    // Your logic when the button is clicked
+    console.log(`Button clicked for ticket with content: ${ticket.content}`);
+    // Add your custom logic here
+  };	
 
   render() {
     return (
-      <div id="content">
+      <div id="content" style={{ textAlign: 'right', paddingLeft: '160px' }}> 
         <form onSubmit={(event) => {
           event.preventDefault()
           this.props.createTicket(this.ticket.value)
@@ -18,6 +24,7 @@ class Market extends Component {
               <div className="ticketTemplate" className="checkbox" key={key}>
                 <label>
                   <span className="content">{ticket.content}</span>
+				  <button onClick={() => this.handleButtonClick(ticket)}>Buy This Ticket</button>
                 </label>
               </div>
             )
