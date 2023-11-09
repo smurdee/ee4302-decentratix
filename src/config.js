@@ -1,4 +1,4 @@
-export const MARKET_ADDRESS = '0x4A36e15fe60d6dF91FaCe6Ed42e11c795fBC01D0'
+export const MARKET_ADDRESS = '0x00b5EF893a6A35564873d4f6caA8e175f88a3F52'
 
 export const MARKET_ABI = [
   {
