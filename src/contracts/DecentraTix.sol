@@ -17,12 +17,12 @@ contract DecentraTix is Ownable {
     }
     
     // Mapping of ticketId to Ticket object
-    mapping(uint256 => Ticket) public tickets;
+    mapping(uint256 => Ticket) public ticketInformation;
     
     // Mapping of artist to subscribed addresses
     mapping(address => uint256) public activeSubscriptions;
     
-    // Mapping of address to list of owned tickets
+    // Mapping of ticketId to address
     mapping(uint256 => address) public ticketToOwner;
     
     // Total tickets count
@@ -63,13 +63,13 @@ contract DecentraTix is Ownable {
         uint256 _price,
         string memory section
     ) public onlyOwner {
-        tickets[totalTickets] = Ticket(_eventDate, _eventTime, _row, _seat, _price, totalTickets, section, false);
+        ticketInformation[totalTickets] = Ticket(_eventDate, _eventTime, _row, _seat, _price, totalTickets, section, false);
         emit TicketCreated(totalTickets);
         totalTickets++;
     }
     
     function modifyTicketPrice(uint256 ticketId, uint256 newPrice) public onlyOwner {
-        tickets[ticketId].price = newPrice;
+        ticketInformation[ticketId].price = newPrice;
     }
     
     function modifyResaleTax(uint256 newResaleTaxPercentage) public onlyOwner {
@@ -90,14 +90,14 @@ contract DecentraTix is Ownable {
     
     // User functions
     function buyTicket(uint256 ticketId) private {
-        uint256 ticketPrice = tickets[ticketId].price;
-        require(!(tickets[ticketId].isPurchased), "Ticket already purchased");
+        uint256 ticketPrice = ticketInformation[ticketId].price;
+        require(!(ticketInformation[ticketId].isPurchased), "Ticket already purchased");
         require(msg.value >= ticketPrice, "Insufficient payment");
 
         (bool success,) = address(this).call{value: msg.value}("");
         require(success, "Ticket cannot be purchased");
 
-        tickets[ticketId].isPurchased = true;
+        ticketInformation[ticketId].isPurchased = true;
         ticketToOwner[ticketId] = msg.sender;
         emit TicketBought(msg.sender, ticketId);
         if (msg.value != ticketPrice) {
@@ -126,7 +126,7 @@ contract DecentraTix is Ownable {
         require(ticketToOwner[ticketId] == msg.sender, "You do not own this ticket");
         
         uint256 tax = (newPrice * resaleTaxPercentage) / 100;
-        tickets[ticketId].price = newPrice + tax;
+        ticketInformation[ticketId].price = newPrice + tax;
     }
     
     function transferTicket(uint256 ticketId, address newOwner) public {
