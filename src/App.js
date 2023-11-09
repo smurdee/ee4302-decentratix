@@ -239,6 +239,7 @@ export default function App() {
                     <Route path = "/InterfaceDemo/profile" element = {<ProfileDisplay/>}></Route>
                     <Route path = "/InterfaceDemo/storage" element = {<StorageDisplay/>}></Route>
                     <Route path = "/InterfaceDemo/history" element = {<HistoryDisplay/>}></Route>
+                    <Route path = "*" element = {<ProfileDisplay />}></Route>
                 </Routes>
             </div>
         // </BrowserRouter>
