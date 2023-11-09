@@ -90,6 +90,7 @@ contract DecentraTix is Ownable {
     
     // User functions
     function buyTicket(uint256 ticketId) private {
+        require(ticketId < totalTickets, "Ticket does not exist");
         uint256 ticketPrice = ticketInformation[ticketId].price;
         require(!(ticketInformation[ticketId].isPurchased), "Ticket already purchased");
         require(msg.value >= ticketPrice, "Insufficient payment");
