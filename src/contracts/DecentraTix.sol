@@ -22,8 +22,8 @@ contract DecentraTix {
 		uint id,
 		bool completed
 	);
-  
-	constructor() public {
+      
+	constructor() {
 		createTicket("Test Ticket #1");
     }
 
@@ -39,6 +39,4 @@ contract DecentraTix {
 		tickets[_id] = _ticket;
 		emit TicketCompleted(_id, _ticket.completed);
 	}
-
 }
->>>>>>> eaa12aadcbb16e6e3d5f37ae16a6fcb978bebc3f
