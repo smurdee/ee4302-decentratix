@@ -15,7 +15,7 @@ class App extends Component {
     this.setState({ account: accounts[0] })
     const market = new web3.eth.Contract(MARKET_ABI, MARKET_ADDRESS)
     this.setState({ market })
-    const ticketCount = await market.methods.ticketCount().call()
+    const ticketCount = await market.methods.totalTickets().call()
     this.setState({ ticketCount })
     for (var i = 1; i <= ticketCount; i++) {
       const ticket = await market.methods.tickets(i).call()
