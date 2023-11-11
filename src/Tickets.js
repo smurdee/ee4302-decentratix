@@ -41,20 +41,33 @@ class Market extends Component {
 			<h1>Marketplace</h1>			
 			<ul id="ticketList" className="list-unstyled">
 			  { tickets.map((ticket) => {
-				return(
-				  <div className="ticketTemplate" className="checkbox">
-					<label>
-					  <span className="marketcontent">
-					    {ticket.ticketId}-
-						{ticket.eventDate}-
-						{ticket.eventTime}-
-						{ticket.row}-
-						{ticket.seat}-
-						{ticket.section}
-					  </span>
-					  <button onClick={() => this.handleButtonClick(ticket)}>Buy This Ticket for {ticket.price}</button>
-					</label>
-				  </div>
+				return( ticket.owner == account
+					?  <div className="ticketTemplate" className="checkbox">
+						<label>
+						  <span className="marketcontent">
+							{ticket.ticketId}-
+							{ticket.eventDate}-
+							{ticket.eventTime}-
+							{ticket.row}-
+							{ticket.seat}-
+							{ticket.section}
+						  </span>
+						  <button disabled >You own this ticket</button>
+						</label>
+					  </div>
+					: <div className="ticketTemplate" className="checkbox">
+						<label>
+						  <span className="marketcontent">
+							{ticket.ticketId}-
+							{ticket.eventDate}-
+							{ticket.eventTime}-
+							{ticket.row}-
+							{ticket.seat}-
+							{ticket.section}
+						  </span>
+						  <button onClick={() => this.handleButtonClick(ticket)}>Buy This Ticket for {ticket.price}</button>
+						</label>
+					  </div>  
 				)
 			  })}
 			</ul>
