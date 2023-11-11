@@ -25,8 +25,7 @@ class Market extends Component {
 							{ticket.eventTime}-
 							{ticket.row}-
 							{ticket.seat}-
-							{ticket.section}-
-								{ticket.owner}
+							{ticket.section}
 						  </span>
 						  <button onClick={() => this.handleButtonClick(ticket)}>Sell This Ticket for {ticket.price}</button>
 						</label>
