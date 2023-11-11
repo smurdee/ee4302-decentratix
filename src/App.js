@@ -18,7 +18,7 @@ class App extends Component {
     const ticketCount = await market.methods.totalTickets().call()
     this.setState({ ticketCount })
     for (var i = 1; i <= ticketCount; i++) {
-      const ticket = await market.methods.tickets(i).call()
+      const ticket = await market.methods.ticketInformation(i).call()
       this.setState({
         tickets: [...this.state.tickets, ticket]
       })

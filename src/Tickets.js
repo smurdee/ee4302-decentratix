@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class Market extends Component {
 	
   handleButtonClick = (ticket) => {
-    console.log(`Button clicked for ticket with content: ${ticket.content}`);
+    console.log(`Button clicked for ticket with content: ${ticket.section}`);
     // Add your custom logic here
   };	
 
@@ -18,7 +18,7 @@ class Market extends Component {
 				return(
 				  <div className="ticketTemplate" className="checkbox" key={key}>
 					<label>
-					  <span className="marketcontent">{ticket.content}</span>
+					  <span className="marketcontent">{ticket.section}</span>
 					</label>
 				  </div>
 				)
@@ -33,7 +33,7 @@ class Market extends Component {
 				return(
 				  <div className="ticketTemplate" className="checkbox" key={key}>
 					<label>
-					  <span className="marketcontent">{ticket.content}</span>
+					  <span className="marketcontent">{ticket.section}</span>
 					  <button onClick={() => this.handleButtonClick(ticket)}>Buy This Ticket</button>
 					</label>
 				  </div>
