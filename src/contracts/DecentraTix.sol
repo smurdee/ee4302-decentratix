@@ -6,6 +6,7 @@ import "./Ownable.sol";
 contract DecentraTix is Ownable {
     
     struct Ticket {
+		address owner;
         uint256 eventDate;
         uint256 eventTime;
         uint256 row;
@@ -63,7 +64,7 @@ contract DecentraTix is Ownable {
         uint256 _price,
         string memory section
     ) public onlyOwner {
-        ticketInformation[totalTickets] = Ticket(_eventDate, _eventTime, _row, _seat, _price, totalTickets, section, false);
+        ticketInformation[totalTickets] = Ticket(msg.sender, _eventDate, _eventTime, _row, _seat, _price, totalTickets, section, false);
         emit TicketCreated(totalTickets);
         totalTickets++;
     }
