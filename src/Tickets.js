@@ -2,6 +2,30 @@ import React, { Component } from 'react'
 
 class Market extends Component {
 	
+  constructor(props) {
+	super(props);
+	this.state = {
+	  eventDate: '',
+	  eventTime: '',
+	  row: '',
+	  seat: '',
+	  price: '',
+	  section: ''
+	};
+  }
+  
+  handleInputChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  }
+  
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { eventDate, eventTime, row, seat, price, section } = this.state;
+	//console.log(`createTicket: ${eventDate} ${eventTime} ${row} ${seat} ${price} ${section}`);
+    this.props.createTicket(eventDate, eventTime, row, seat, price, section);
+  }
+	
   handleButtonClick = (ticket) => {
     console.log(`Button clicked for ticket with content: ${ticket.section}`);
     // Add your custom logic here
@@ -73,13 +97,63 @@ class Market extends Component {
 			</ul>
 			<ul id="completedTicketList" className="list-unstyled">
 			</ul>
-			<form onSubmit={(event) => {
-			  event.preventDefault()
-			  this.props.createTicket(this.ticket.value)
-			}}>
-			  <input id="newTicket" ref={(input) => this.ticket = input} type="text" className="form-control" style={{ width: '200px'}} placeholder="Add ticket..." required />
-			  <input type="submit" hidden={true} />
-			</form>
+			<form onSubmit={this.handleSubmit}>
+				<input
+				  id="eventDate"
+				  name="eventDate"
+				  type="number"
+				  value={this.state.eventDate}
+				  onChange={this.handleInputChange}
+				  placeholder="Event Date"
+				  required
+				/>
+				<input
+				  id="eventTime"
+				  name="eventTime"
+				  type="number"
+				  value={this.state.eventTime}
+				  onChange={this.handleInputChange}
+				  placeholder="Event Time"
+				  required
+				/>
+				<input
+				  id="row"
+				  name="row"
+				  type="number"
+				  value={this.state.row}
+				  onChange={this.handleInputChange}
+				  placeholder="Ticket Row"
+				  required
+				/>
+				<input
+				  id="seat"
+				  name="seat"
+				  type="number"
+				  value={this.state.seat}
+				  onChange={this.handleInputChange}
+				  placeholder="Ticket Seat"
+				  required
+				/>
+				<input
+				  id="price"
+				  name="price"
+				  type="number"
+				  value={this.state.price}
+				  onChange={this.handleInputChange}
+				  placeholder="Ticket Price"
+				  required
+				/>
+				<input
+				  id="section"
+				  name="section"
+				  type="text"
+				  value={this.state.section}
+				  onChange={this.handleInputChange}
+				  placeholder="Event Section"
+				  required
+				/>
+				<input type="submit" hidden={true} />
+			  </form>
 		  </div>	
 		</div>
 	  </div>

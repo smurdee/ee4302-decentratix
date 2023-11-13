@@ -37,9 +37,9 @@ class App extends Component {
 	this.createTicket = this.createTicket.bind(this)
   }
   
-  createTicket(content) {
+  createTicket(eventDate, eventTime, row, seat, price, section) {
     this.setState({ loading: true })
-    this.state.market.methods.createTicket(content).send({ from: this.state.account })
+    this.state.market.methods.createTicket(eventDate, eventTime, row, seat, price, section).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
