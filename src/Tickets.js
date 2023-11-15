@@ -53,12 +53,7 @@ class Market extends Component {
 						?  <div className="ticketTemplate" className="checkbox">
 							  <label>
 							    <span className="marketcontent">
-								  {ticket.ticketId}-
-								  {ticket.eventDate}-
-								  {ticket.eventTime}-
-								  {ticket.row}-
-								  {ticket.seat}-
-								  {ticket.section}
+								  {ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 							    </span>
 							    <button onClick={() => this.handleSetSaleTicket(ticket)}>Sell This Ticket for {ticket.price}</button>
 							  </label>
@@ -66,12 +61,7 @@ class Market extends Component {
 						:  <div className="ticketTemplate" className="checkbox">
 							  <label>
 							    <span className="marketcontent">
-								  {ticket.ticketId}-
-								  {ticket.eventDate}-
-								  {ticket.eventTime}-
-								  {ticket.row}-
-								  {ticket.seat}-
-								  {ticket.section}
+								  {ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 							    </span>
 							    <button disabled>Pending Buyer</button>
 							  </label>
@@ -91,12 +81,7 @@ class Market extends Component {
 					?  <div className="ticketTemplate" className="checkbox">
 						<label>
 						  <span className="marketcontent">
-							{ticket.ticketId}-
-							{ticket.eventDate}-
-							{ticket.eventTime}-
-							{ticket.row}-
-							{ticket.seat}-
-							{ticket.section}
+							{ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 						  </span>
 						  <button disabled >You own this ticket</button>
 						</label>
@@ -108,12 +93,7 @@ class Market extends Component {
 							? <div className="ticketTemplate" className="checkbox">
 								<label>
 								  <span className="marketcontent">
-									{ticket.ticketId}-
-									{ticket.eventDate}-
-									{ticket.eventTime}-
-									{ticket.row}-
-									{ticket.seat}-
-									{ticket.section}
+								    {ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 								  </span>
 								  <button onClick={() => this.handleBuyTicket(ticket)}>Buy This Ticket for {ticket.price}</button>
 								</label>
@@ -121,12 +101,7 @@ class Market extends Component {
 						    : <div className="ticketTemplate" className="checkbox">
 								<label>
 								  <span className="marketcontent">
-									{ticket.ticketId}-
-									{ticket.eventDate}-
-									{ticket.eventTime}-
-									{ticket.row}-
-									{ticket.seat}-
-									{ticket.section}
+									{ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 								  </span>
 								  <button disabled>Ticket Unavailable</button>
 								</label>
