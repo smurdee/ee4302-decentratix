@@ -15,6 +15,7 @@ contract DecentraTix is Ownable {
         uint256 ticketId;
         string section;
         bool isPurchased;
+        bool isOnSale;
     }
     
     // Mapping of ticketId to Ticket object
@@ -31,7 +32,7 @@ contract DecentraTix is Ownable {
     uint256 public resaleTaxPercentage = 5;
     bool public isResaleAllowed = true;
     bool public isTransferAllowed = true;
-    bool public isPublicSale;
+    bool public isPublicSale = true;
     string public artist;
     
     // Events
@@ -64,7 +65,7 @@ contract DecentraTix is Ownable {
         uint256 _price,
         string memory section
     ) public onlyOwner {
-        ticketInformation[totalTickets] = Ticket(msg.sender, _eventDate, _eventTime, _row, _seat, _price, totalTickets, section, false);
+        ticketInformation[totalTickets] = Ticket(address(0), _eventDate, _eventTime, _row, _seat, _price, totalTickets, section, false, true);
         emit TicketCreated(totalTickets);
         totalTickets++;
     }
@@ -106,11 +107,36 @@ contract DecentraTix is Ownable {
         }
     }
 
+    function demoBuyTicket(uint256 ticketId) private {
+        //uint256 ticketPrice = ticketInformation[ticketId].price;
+        //require(!(ticketInformation[ticketId].isPurchased), "Ticket already purchased");
+        //require(msg.value >= ticketPrice, "Insufficient payment");
+        require((ticketInformation[ticketId].isOnSale), "Current holder does not want to sell this ticket");
+        require((ticketInformation[ticketId].owner != msg.sender), "You owned this ticket");
+
+        //(bool success,) = address(this).call{value: msg.value}("");
+        //require(success, "Ticket cannot be purchased");
+
+        ticketInformation[ticketId].isPurchased = true;
+        ticketInformation[ticketId].owner = msg.sender;
+        ticketInformation[ticketId].isOnSale = false;
+        ticketToOwner[ticketId] = msg.sender;
+        emit TicketBought(msg.sender, ticketId);
+        //if (msg.value != ticketPrice) {
+        //    payable(msg.sender).transfer(msg.value - ticketPrice);
+        //}
+    }
+
     function buyTicketSubscriber(uint256 ticketId) public payable onlySubscriber() {
         buyTicket(ticketId);
     }
 
     function buyTicketPublic(uint256 ticketId) public payable {
+        require(isPublicSale, "Public sale is not open yet");
+        buyTicket(ticketId);
+    }
+
+    function demoBuyTicketPublic(uint256 ticketId) public {
         require(isPublicSale, "Public sale is not open yet");
         buyTicket(ticketId);
     }
@@ -128,6 +154,7 @@ contract DecentraTix is Ownable {
         
         uint256 tax = (newPrice * resaleTaxPercentage) / 100;
         ticketInformation[ticketId].price = newPrice + tax;
+        ticketInformation[ticketId].isOnSale = true;
     }
     
     function transferTicket(uint256 ticketId, address newOwner) public {
