@@ -40,7 +40,7 @@ class Market extends Component {
   };	
 
   render() {
-	const { tickets, account, createTicket } = this.props;
+	const { tickets, account, createTicket, buyTicket, setSaleTicket, owner } = this.props;
     return (
 	  <div id="content" class="cntainer"> 
 		<div class="row">
@@ -139,7 +139,7 @@ class Market extends Component {
 			</ul>
 			<ul id="completedTicketList" className="list-unstyled">
 			</ul>
-			<form onSubmit={this.handleSubmit}>
+			{account === owner && (<form onSubmit={this.handleSubmit}>
 				<input
 				  id="eventDate"
 				  name="eventDate"
@@ -196,6 +196,7 @@ class Market extends Component {
 				/>
 				<input type="submit" hidden={true} />
 			  </form>
+			)}  
 		  </div>	
 		</div>
 	  </div>

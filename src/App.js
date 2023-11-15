@@ -23,6 +23,8 @@ class App extends Component {
         tickets: [...this.state.tickets, ticket]
       })
     }
+	const owner = await market.methods.owner().call()
+	this.setState({ owner })
 	this.setState({ loading: false })
   }
   
@@ -32,6 +34,7 @@ class App extends Component {
       account: '',
       ticketCount: 0,
       tickets: [],
+	  owner: '',
 	  loading: true
     }
 	this.createTicket = this.createTicket.bind(this)
@@ -79,7 +82,7 @@ class App extends Component {
 			<main role="main" className="col-lg-12 d-flex justify-content-center">			  
 			  {this.state.loading 
 				? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div> 
-				: <Market tickets={this.state.tickets} account={this.state.account} createTicket={this.createTicket} buyTicket={this.buyTicket} setSaleTicket={this.setSaleTicket} /> }
+				: <Market tickets={this.state.tickets} account={this.state.account} createTicket={this.createTicket} buyTicket={this.buyTicket} setSaleTicket={this.setSaleTicket} owner={this.state.owner} /> }
 			</main>
 		  </div>
 		</div>
