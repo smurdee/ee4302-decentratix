@@ -10,22 +10,26 @@ class App extends Component {
   }
   
   async loadBlockchainData(to) {
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-    const accounts = await web3.eth.getAccounts()
-    this.setState({ account: accounts[0] })
-    const market = new web3.eth.Contract(MARKET_ABI, MARKET_ADDRESS)
-    this.setState({ market })
-    const ticketCount = await market.methods.totalTickets().call()
-    this.setState({ ticketCount })
-    for (var i = 0; i <= ticketCount; i++) {
-      const ticket = await market.methods.ticketInformation(i).call()
-      this.setState({
-        tickets: [...this.state.tickets, ticket]
-      })
-    }
-	const owner = await market.methods.owner().call()
-	this.setState({ owner })
-	this.setState({ loading: false })
+    const web3 = new Web3(window.ethereum || "http://localhost:8545")
+	try {
+		const accounts = await web3.eth.getAccounts()
+		this.setState({ account: accounts[0] })
+		const market = new web3.eth.Contract(MARKET_ABI, MARKET_ADDRESS)
+		this.setState({ market })
+		const ticketCount = await market.methods.totalTickets().call()
+		this.setState({ ticketCount })
+		for (var i = 0; i <= ticketCount; i++) {
+		  const ticket = await market.methods.ticketInformation(i).call()
+		  this.setState({
+			tickets: [...this.state.tickets, ticket]
+		  })
+		}
+		const owner = await market.methods.owner().call()
+		this.setState({ owner })
+		this.setState({ loading: false })
+	} catch (error) {
+		console.error("Error while connecting to MetaMask:", error);
+	}
   }
   
   constructor(props) {
