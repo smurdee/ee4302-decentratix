@@ -194,4 +194,9 @@ contract DecentraTix is Ownable {
             v := byte(0, mload(add(sig, 96)))
         }
     }
+
+    function withdraw(address payable _to) external onlyOwner {
+        require(address(this).balance != 0, "Contract balance is 0");
+        _to.transfer(address(this).balance);
+    }
 }
