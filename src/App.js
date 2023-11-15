@@ -10,7 +10,7 @@ class App extends Component {
   }
   
   async loadBlockchainData(to) {
-    const web3 = new Web3(window.ethereum || "http://localhost:8545")
+    const web3 = new Web3(window.ethereum)
 	try {
 		const accounts = await web3.eth.getAccounts()
 		this.setState({ account: accounts[0] })
