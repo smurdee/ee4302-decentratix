@@ -17,7 +17,7 @@ class App extends Component {
     this.setState({ market })
     const ticketCount = await market.methods.totalTickets().call()
     this.setState({ ticketCount })
-    for (var i = 1; i <= ticketCount; i++) {
+    for (var i = 0; i <= ticketCount; i++) {
       const ticket = await market.methods.ticketInformation(i).call()
       this.setState({
         tickets: [...this.state.tickets, ticket]
@@ -35,6 +35,7 @@ class App extends Component {
 	  loading: true
     }
 	this.createTicket = this.createTicket.bind(this)
+	this.buyTicket = this.buyTicket.bind(this)
   }
   
   createTicket(eventDate, eventTime, row, seat, price, section) {
@@ -43,6 +44,14 @@ class App extends Component {
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
+  }
+  
+  buyTicket(ticketId) {
+	this.setState({ loading: true })
+    this.state.market.methods.demoBuyTicketPublic(ticketId).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    }) 
   }
   
   render() {
@@ -61,7 +70,7 @@ class App extends Component {
 			<main role="main" className="col-lg-12 d-flex justify-content-center">			  
 			  {this.state.loading 
 				? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div> 
-				: <Market tickets={this.state.tickets} account={this.state.account} createTicket={this.createTicket} /> }
+				: <Market tickets={this.state.tickets} account={this.state.account} createTicket={this.createTicket} buyTicket={this.buyTicket} /> }
 			</main>
 		  </div>
 		</div>

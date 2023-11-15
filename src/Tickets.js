@@ -25,6 +25,10 @@ class Market extends Component {
 	//console.log(`createTicket: ${eventDate} ${eventTime} ${row} ${seat} ${price} ${section}`);
     this.props.createTicket(eventDate, eventTime, row, seat, price, section);
   }
+  
+  handleBuyTicket = (ticket) => {
+	  this.props.buyTicket(ticket.ticketId);
+  }
 	
   handleButtonClick = (ticket) => {
     console.log(`Button clicked for ticket with content: ${ticket.section}`);
@@ -79,19 +83,25 @@ class Market extends Component {
 						  <button disabled >You own this ticket</button>
 						</label>
 					  </div>
-					: <div className="ticketTemplate" className="checkbox">
-						<label>
-						  <span className="marketcontent">
-							{ticket.ticketId}-
-							{ticket.eventDate}-
-							{ticket.eventTime}-
-							{ticket.row}-
-							{ticket.seat}-
-							{ticket.section}
-						  </span>
-						  <button onClick={() => this.handleButtonClick(ticket)}>Buy This Ticket for {ticket.price}</button>
-						</label>
-					  </div>  
+					  
+					  
+					: ( !((ticket.ticketId == "0") && (ticket.eventDate == "0") && (ticket.eventTime == "0") && (ticket.section == "")))
+					    ? <div className="ticketTemplate" className="checkbox">
+							<label>
+							  <span className="marketcontent">
+								{ticket.ticketId}-
+								{ticket.eventDate}-
+								{ticket.eventTime}-
+								{ticket.row}-
+								{ticket.seat}-
+								{ticket.section}
+							  </span>
+							  <button onClick={() => this.handleBuyTicket(ticket)}>Buy This Ticket for {ticket.price}</button>
+							</label>
+						  </div>  
+						: <div>
+						  </div>
+					
 				)
 			  })}
 			</ul>
