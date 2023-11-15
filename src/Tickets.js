@@ -86,19 +86,33 @@ class Market extends Component {
 					  
 					  
 					: ( !((ticket.ticketId == "0") && (ticket.eventDate == "0") && (ticket.eventTime == "0") && (ticket.section == "")))
-					    ? <div className="ticketTemplate" className="checkbox">
-							<label>
-							  <span className="marketcontent">
-								{ticket.ticketId}-
-								{ticket.eventDate}-
-								{ticket.eventTime}-
-								{ticket.row}-
-								{ticket.seat}-
-								{ticket.section}
-							  </span>
-							  <button onClick={() => this.handleBuyTicket(ticket)}>Buy This Ticket for {ticket.price}</button>
-							</label>
-						  </div>  
+					    ? (ticket.isOnSale)
+							? <div className="ticketTemplate" className="checkbox">
+								<label>
+								  <span className="marketcontent">
+									{ticket.ticketId}-
+									{ticket.eventDate}-
+									{ticket.eventTime}-
+									{ticket.row}-
+									{ticket.seat}-
+									{ticket.section}
+								  </span>
+								  <button onClick={() => this.handleBuyTicket(ticket)}>Buy This Ticket for {ticket.price}</button>
+								</label>
+							  </div>  
+						    : <div className="ticketTemplate" className="checkbox">
+								<label>
+								  <span className="marketcontent">
+									{ticket.ticketId}-
+									{ticket.eventDate}-
+									{ticket.eventTime}-
+									{ticket.row}-
+									{ticket.seat}-
+									{ticket.section}
+								  </span>
+								  <button disabled>Ticket Unavailable</button>
+								</label>
+							  </div>  
 						: <div>
 						  </div>
 					
