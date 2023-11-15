@@ -1,4 +1,4 @@
-export const MARKET_ADDRESS = '0xfA0bC40Abb24614b46cad715c4aE735cf2882b1f'
+export const MARKET_ADDRESS = '0xF17C82b770a9493453345E622a127910DBcb2E46'
 
 export const MARKET_ABI = 
 [
@@ -148,6 +148,19 @@ export const MARKET_ABI =
 			}
 		],
 		"name": "createTicket",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "ticketId",
+				"type": "uint256"
+			}
+		],
+		"name": "demoBuyTicketPublic",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -537,6 +550,11 @@ export const MARKET_ABI =
 			{
 				"internalType": "bool",
 				"name": "isPurchased",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "isOnSale",
 				"type": "bool"
 			}
 		],
