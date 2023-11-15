@@ -55,6 +55,7 @@ class Market extends Component {
 							    <span className="marketcontent">
 								  {ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 							    </span>
+								<br></br>
 							    <button onClick={() => this.handleSetSaleTicket(ticket)}>Sell This Ticket for {ticket.price}</button>
 							  </label>
 						    </div>
@@ -83,6 +84,7 @@ class Market extends Component {
 						  <span className="marketcontent">
 							{ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 						  </span>
+						  <br></br>
 						  <button disabled >You own this ticket</button>
 						</label>
 					  </div>
@@ -95,6 +97,7 @@ class Market extends Component {
 								  <span className="marketcontent">
 								    {ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 								  </span>
+								  <br></br>
 								  <button onClick={() => this.handleBuyTicket(ticket)}>Buy This Ticket for {ticket.price}</button>
 								</label>
 							  </div>  
@@ -103,6 +106,7 @@ class Market extends Component {
 								  <span className="marketcontent">
 									{ticket.section} | Row: {ticket.row} | Seat: {ticket.seat} | Time: {ticket.eventDate}, {ticket.eventTime}
 								  </span>
+								  <br></br>
 								  <button disabled>Ticket Unavailable</button>
 								</label>
 							  </div>  
