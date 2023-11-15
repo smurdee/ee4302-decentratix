@@ -138,7 +138,7 @@ contract DecentraTix is Ownable {
 
     function demoBuyTicketPublic(uint256 ticketId) public {
         require(isPublicSale, "Public sale is not open yet");
-        buyTicket(ticketId);
+        demoBuyTicket(ticketId);
     }
     
     function subscribeToArtist() public payable {
