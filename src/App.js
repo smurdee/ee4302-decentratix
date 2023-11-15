@@ -47,6 +47,7 @@ class App extends Component {
     this.state.market.methods.createTicket(eventDate, eventTime, row, seat, price, section).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
+	  window.location.reload(false);
     })
   }
   
@@ -55,6 +56,7 @@ class App extends Component {
     this.state.market.methods.demoBuyTicketPublic(ticketId).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
+	  window.location.reload(false);
     }) 
   }
   
@@ -63,6 +65,7 @@ class App extends Component {
     this.state.market.methods.resaleTicket(ticketId, price).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
+	  window.location.reload(false);
     }) 
   }    
   
