@@ -29,6 +29,10 @@ class Market extends Component {
   handleBuyTicket = (ticket) => {
 	  this.props.buyTicket(ticket.ticketId);
   }
+  
+  handleSetSaleTicket = (ticket) => {
+	  this.props.setSaleTicket(ticket.ticketId, ticket.price);
+  }
 	
   handleButtonClick = (ticket) => {
     console.log(`Button clicked for ticket with content: ${ticket.section}`);
@@ -45,19 +49,33 @@ class Market extends Component {
 			<ul id="ticketList" className="list-unstyled">
 			  { tickets.map((ticket) => {
 				return( ticket.owner == account
-					?  <div className="ticketTemplate" className="checkbox">
-						<label>
-						  <span className="marketcontent">
-							{ticket.ticketId}-
-							{ticket.eventDate}-
-							{ticket.eventTime}-
-							{ticket.row}-
-							{ticket.seat}-
-							{ticket.section}
-						  </span>
-						  <button onClick={() => this.handleButtonClick(ticket)}>Sell This Ticket for {ticket.price}</button>
-						</label>
-					  </div>
+					?  (!(ticket.isOnSale))
+						?  <div className="ticketTemplate" className="checkbox">
+							  <label>
+							    <span className="marketcontent">
+								  {ticket.ticketId}-
+								  {ticket.eventDate}-
+								  {ticket.eventTime}-
+								  {ticket.row}-
+								  {ticket.seat}-
+								  {ticket.section}
+							    </span>
+							    <button onClick={() => this.handleSetSaleTicket(ticket)}>Sell This Ticket for {ticket.price}</button>
+							  </label>
+						    </div>
+						:  <div className="ticketTemplate" className="checkbox">
+							  <label>
+							    <span className="marketcontent">
+								  {ticket.ticketId}-
+								  {ticket.eventDate}-
+								  {ticket.eventTime}-
+								  {ticket.row}-
+								  {ticket.seat}-
+								  {ticket.section}
+							    </span>
+							    <button disabled>Pending Buyer</button>
+							  </label>
+						    </div>					
 					: <div className="ticketTemplate" className="checkbox">
 					  </div>
 				)

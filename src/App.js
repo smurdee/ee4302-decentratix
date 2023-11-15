@@ -36,6 +36,7 @@ class App extends Component {
     }
 	this.createTicket = this.createTicket.bind(this)
 	this.buyTicket = this.buyTicket.bind(this)
+	this.setSaleTicket = this.setSaleTicket.bind(this)
   }
   
   createTicket(eventDate, eventTime, row, seat, price, section) {
@@ -54,6 +55,14 @@ class App extends Component {
     }) 
   }
   
+  setSaleTicket(ticketId, price) {
+	this.setState({ loading: true })
+    this.state.market.methods.resaleTicket(ticketId, price).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    }) 
+  }    
+  
   render() {
 	return (
 	  <div>
@@ -70,7 +79,7 @@ class App extends Component {
 			<main role="main" className="col-lg-12 d-flex justify-content-center">			  
 			  {this.state.loading 
 				? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div> 
-				: <Market tickets={this.state.tickets} account={this.state.account} createTicket={this.createTicket} buyTicket={this.buyTicket} /> }
+				: <Market tickets={this.state.tickets} account={this.state.account} createTicket={this.createTicket} buyTicket={this.buyTicket} setSaleTicket={this.setSaleTicket} /> }
 			</main>
 		  </div>
 		</div>
